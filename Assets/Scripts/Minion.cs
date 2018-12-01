@@ -153,10 +153,8 @@ public class Minion : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Minion is Colliding!");
-
-        //if (state != MinionState.Shoot)
-        //    return;
+        if (state != MinionState.Shoot && state != MinionState.ShootPrep)
+            return;
 
         if (other.tag == "Environment" || other.tag == "Enemy")
         {
@@ -171,6 +169,7 @@ public class Minion : MonoBehaviour
         state = MinionState.Idle; // TEMP
         rb.velocity = Vector3.zero;
         explosion.Boom();
+        Die();
 
         // Initiate explosion sequence
 
@@ -193,5 +192,10 @@ public class Minion : MonoBehaviour
         // Play Particles plus shooting animation
 
         state = MinionState.Shoot;
+    }
+
+    void Die()
+    {
+        // TODO
     }
 }

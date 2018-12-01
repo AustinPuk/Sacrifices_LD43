@@ -7,33 +7,41 @@ public class Explosion : MonoBehaviour
     //Sphere Collider
 
     //other explosion parameters here
+    ParticleSystem particles;
 
     bool isExploding = false;
 
     public void Boom()
     {
-        gameObject.SetActive(true);
+        //gameObject.SetActive(true);
+
+        particles.Play();
+
+        // TODO Make Sphere params parameters
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, 3.0f);
+        foreach (Collider hit in hitColliders)
+        {
+            if (hit.gameObject.tag == "Enemy" || hit.gameObject.tag == "Player")
+            {
+                //Do Damage
+                Debug.Log("Doing Damage to : " + hit.name);
+            }
+        }
     }
 
-    void OnEnable()
-    {
-        // Particle Effect Stuff
 
-        // Expanding Sphere Collider
+    void Start()
+    {
+        particles = GetComponent<ParticleSystem>();
     }
 
     private void Update()
     {
         if (isExploding)
         {
+            //TODO
             // Expand Sphere Collider over time
         }
 
-    }
-
-    // For detecting when the expanding sphere intersects with an enemy or player
-    void OnTriggerEnter(Collider other)
-    {
-        // If other.gameObject is of type Damageable, do damage
     }
 }
