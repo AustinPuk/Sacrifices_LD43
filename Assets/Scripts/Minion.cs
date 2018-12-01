@@ -1,8 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
-[RequireComponent(typeof(CharacterController))]
 public class Minion : MonoBehaviour
 {
     [SerializeField]
@@ -15,10 +15,15 @@ public class Minion : MonoBehaviour
     float followDistance;
 
     [SerializeField]
+    float stopDistance;
+
+    [SerializeField]
     float speedBoost = 3.0f;
 
     Vector3 movementVector;
-    CharacterController controller;
+    //NavMeshAgent nav;
+
+    Rigidbody rb;
 
     Vector3 shootDest;
 
@@ -69,8 +74,8 @@ public class Minion : MonoBehaviour
 
     void Start()
     {
-        controller = GetComponent<CharacterController>();
-
+        //nav = GetComponent<NavMeshAgent>();
+        rb = GetComponent<Rigidbody>();
         // TEMP
         Follow();
     }
@@ -98,11 +103,19 @@ public class Minion : MonoBehaviour
             Vector3 movementVector = destination - transform.position;
 
             // Utilizing Character Controller for Movement
-            controller.Move(movementVector * movementSpeed * Time.deltaTime);
+            //controller.Move(movementVector * movementSpeed * Time.deltaTime);
+
+            float dist = Vector3.SqrMagnitude(king.transform.position - transform.position);
+            if (dist >= stopDistance)
+                rb.velocity = movementVector * movementSpeed;
+            else
+                rb.velocity = Vector3.zero;
+
+            //nav.SetDestination(destination);
 
             // Character tries to face in direction of movement vector.
-            if (movementVector != Vector3.zero)
-                transform.LookAt(transform.position + Vector3.Slerp(transform.forward, movementVector, 0.8f), transform.up);
+            //if (movementVector != Vector3.zero)
+                //transform.LookAt(transform.position + Vector3.Slerp(transform.forward, movementVector, 0.8f), transform.up);
         }
         else if (state == MinionState.ShootPrep)
         {
@@ -113,7 +126,9 @@ public class Minion : MonoBehaviour
             if (Vector3.SqrMagnitude(movementVector) > destThreshold)
             {
                 // Utilizing Character Controller for Movement
-                controller.Move(movementVector * movementSpeed * speedBoost * Time.deltaTime);
+                //controller.Move(movementVector * movementSpeed * speedBoost * Time.deltaTime);
+                //nav.SetDestination(shootDest);
+                rb.velocity = movementVector * movementSpeed * speedBoost;
 
                 // Character tries to face in direction of movement vector.
                 if (movementVector != Vector3.zero)
@@ -122,6 +137,8 @@ public class Minion : MonoBehaviour
             else // Arrived to destination
             {
                 // Look in proper direction
+                //nav.isStopped = true;
+                rb.velocity = Vector3.zero;
                 transform.LookAt(shootDest + (shootDest - king.transform.position) * 5.0f, transform.up); // untested
                 ShootPrepAnimation();
             }
@@ -130,7 +147,8 @@ public class Minion : MonoBehaviour
         {
             Debug.Log("Minion : Shooting");
             Vector3 movementVector = transform.forward;
-            controller.Move(movementVector * movementSpeed * speedBoost * Time.deltaTime);
+            GetComponent<Rigidbody>().velocity = movementVector * movementSpeed * speedBoost;
+            //controller.Move(movementVector * movementSpeed * speedBoost * Time.deltaTime);
         }
 
         //TODO : Logic for when coming out of castle
@@ -139,8 +157,12 @@ public class Minion : MonoBehaviour
     // For detecting when a shot minion hits an object. May not be the right function.
     void OnCollisionEnter(Collision collision)
     {
+        Debug.Log("Minion is Colliding!");
+
         if (state != MinionState.Shoot)
             return;
+
+        //TODO : When being shot, minions should ignore collisions with other minions. Should use the "trigger" instead of collide
 
         Boom();
 

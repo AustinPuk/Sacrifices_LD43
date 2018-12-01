@@ -2,14 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(CharacterController))]
 public class Player : MonoBehaviour
 {
     [SerializeField]
     float movementSpeed = 5;
 
     Vector3 movementVector;
-    CharacterController controller;
+    Rigidbody rb;
 
     enum PlayerState
     {
@@ -28,6 +27,7 @@ public class Player : MonoBehaviour
     {
         state = PlayerState.Shooting;
 
+        rb.velocity = Vector3.zero;
         transform.LookAt(transform.position + shootDirection, transform.up);
 
         StartCoroutine(ShootAnimation());
@@ -38,7 +38,8 @@ public class Player : MonoBehaviour
      */
     void Start ()
     {
-        controller = GetComponent<CharacterController>();
+        //controller = GetComponent<CharacterController>();
+        rb = GetComponent<Rigidbody>();
         //Temp
         state = PlayerState.Active;
     }
@@ -62,7 +63,8 @@ public class Player : MonoBehaviour
         if(state == PlayerState.Active)
         {
             // Utilizing Character Controller for Movement
-            controller.Move(movementVector * movementSpeed * Time.deltaTime);
+            //controller.Move(movementVector * movementSpeed * Time.deltaTime);
+            rb.velocity = movementVector * movementSpeed;
 
             // Character tries to face in direction of movement vector.
             if (movementVector != Vector3.zero)
