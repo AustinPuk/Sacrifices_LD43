@@ -233,7 +233,7 @@ GameObject:
   - component: {fileID: 98172007}
   m_Layer: 0
   m_Name: Cube
-  m_TagString: Untagged
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -323,7 +323,7 @@ GameObject:
   - component: {fileID: 151903013}
   m_Layer: 0
   m_Name: Cube (1)
-  m_TagString: Untagged
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -573,7 +573,7 @@ GameObject:
   - component: {fileID: 308543218}
   m_Layer: 0
   m_Name: Cube (5)
-  m_TagString: Untagged
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -709,7 +709,7 @@ GameObject:
   - component: {fileID: 350639991}
   m_Layer: 0
   m_Name: Cube (2)
-  m_TagString: Untagged
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -794,7 +794,7 @@ GameObject:
   - component: {fileID: 382610228}
   m_Layer: 0
   m_Name: Cube
-  m_TagString: Untagged
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -879,7 +879,7 @@ GameObject:
   - component: {fileID: 423472045}
   m_Layer: 0
   m_Name: Cube (2)
-  m_TagString: Untagged
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -964,7 +964,7 @@ GameObject:
   - component: {fileID: 436191081}
   m_Layer: 0
   m_Name: Cube (1)
-  m_TagString: Untagged
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1238,7 +1238,7 @@ GameObject:
   - component: {fileID: 629804829}
   m_Layer: 0
   m_Name: Temp_Wall_1 (3)
-  m_TagString: Untagged
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1405,7 +1405,7 @@ GameObject:
   - component: {fileID: 953515885}
   m_Layer: 0
   m_Name: Environment
-  m_TagString: Untagged
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1420,9 +1420,9 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 957623236}
-  - {fileID: 917977279}
   - {fileID: 1824916219}
+  - {fileID: 917977279}
+  - {fileID: 957623236}
   - {fileID: 1324917703}
   - {fileID: 2024332019}
   m_Father: {fileID: 0}
@@ -1458,7 +1458,7 @@ Transform:
   - {fileID: 2038892675}
   - {fileID: 629804828}
   m_Father: {fileID: 953515885}
-  m_RootOrder: 0
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1002030097 stripped
 Transform:
@@ -1529,7 +1529,7 @@ GameObject:
   - component: {fileID: 1131324808}
   m_Layer: 0
   m_Name: Temp_Wall_1 (1)
-  m_TagString: Untagged
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1675,7 +1675,7 @@ GameObject:
   - component: {fileID: 1284708255}
   m_Layer: 0
   m_Name: Temp_Wall_1
-  m_TagString: Untagged
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2057,7 +2057,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 1327191045}
-  minimumShootDistance: 5
+  minimumShootDistance: 15
 --- !u!1001 &1585315289
 Prefab:
   m_ObjectHideFlags: 0
@@ -2341,7 +2341,7 @@ Transform:
   m_Children:
   - {fileID: 170076735}
   m_Father: {fileID: 953515885}
-  m_RootOrder: 2
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1857873322
 Prefab:
@@ -2454,7 +2454,7 @@ GameObject:
   - component: {fileID: 1963449775}
   m_Layer: 0
   m_Name: Cube (3)
-  m_TagString: Untagged
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2536,7 +2536,7 @@ GameObject:
   - component: {fileID: 2024332019}
   m_Layer: 0
   m_Name: Castle
-  m_TagString: Untagged
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2570,7 +2570,7 @@ GameObject:
   - component: {fileID: 2038892676}
   m_Layer: 0
   m_Name: Temp_Wall_1 (2)
-  m_TagString: Untagged
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2660,7 +2660,7 @@ GameObject:
   - component: {fileID: 2116834009}
   m_Layer: 0
   m_Name: Cube (4)
-  m_TagString: Untagged
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

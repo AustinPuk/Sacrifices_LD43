@@ -10,6 +10,11 @@ public class Explosion : MonoBehaviour
 
     bool isExploding = false;
 
+    public void Boom()
+    {
+        gameObject.SetActive(true);
+    }
+
     void OnEnable()
     {
         // Particle Effect Stuff

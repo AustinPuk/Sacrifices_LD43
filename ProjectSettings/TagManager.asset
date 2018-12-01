@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - Minions
+  - Enemy
+  - Environment
   layers:
   - Default
   - TransparentFX

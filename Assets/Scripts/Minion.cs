@@ -27,6 +27,9 @@ public class Minion : MonoBehaviour
 
     Vector3 shootDest;
 
+    [SerializeField]
+    Explosion explosion; // TODO :Better way to pass object
+
     enum MinionState
     {
         Hidden,
@@ -47,6 +50,7 @@ public class Minion : MonoBehaviour
 
     public void Follow()
     {
+        GetComponent<Collider>().isTrigger = false;
         state = MinionState.Follow;
     }
 
@@ -54,18 +58,11 @@ public class Minion : MonoBehaviour
     {
         Debug.Log("Minion : Shoot Prep");
 
+        // TEMP Set as trigger to avoid collisions. In the future, want to have the minion properly walk around the player.
+        GetComponent<Collider>().isTrigger = true;
+
         shootDest = king.transform.position + (shootDirection * followDistance);
         state = MinionState.ShootPrep;
-
-        // Note : Shoot Direction is relative to Player
-
-        // Move to in front of player in the proper shooting direction (not side, cause that'd mess with direction)
-
-        // Pause, Animation (Probably Coroutine)
-
-        // Shoot out forward
-
-        // Enable "isShooting" bool
     }
 
     /*
@@ -154,21 +151,16 @@ public class Minion : MonoBehaviour
         //TODO : Logic for when coming out of castle
     }
 
-    // For detecting when a shot minion hits an object. May not be the right function.
-    void OnCollisionEnter(Collision collision)
+    void OnTriggerEnter(Collider other)
     {
         Debug.Log("Minion is Colliding!");
 
-        if (state != MinionState.Shoot)
-            return;
+        //if (state != MinionState.Shoot)
+        //    return;
 
-        //TODO : When being shot, minions should ignore collisions with other minions. Should use the "trigger" instead of collide
-
-        Boom();
-
-        foreach (ContactPoint contact in collision.contacts)
+        if (other.tag == "Environment" || other.tag == "Enemy")
         {
-            Debug.DrawRay(contact.point, contact.normal, Color.red);
+            Boom();
         }
     }
 
@@ -177,6 +169,8 @@ public class Minion : MonoBehaviour
         Debug.Log("Minion : BOOM HIT SOMETHING");
 
         state = MinionState.Idle; // TEMP
+        rb.velocity = Vector3.zero;
+        explosion.Boom();
 
         // Initiate explosion sequence
 

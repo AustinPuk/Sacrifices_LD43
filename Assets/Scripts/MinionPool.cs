@@ -44,9 +44,7 @@ public class MinionPool : MonoBehaviour
         if (closestMinion == null)
             return false;  // Shooting failed.
 
-        Debug.Log("Following Before : " + following.Count);
         following.Remove(closestMinion);
-        Debug.Log("Following After : " + following.Count);
         closestMinion.Shoot(shootDirection);
         return true;
     }
