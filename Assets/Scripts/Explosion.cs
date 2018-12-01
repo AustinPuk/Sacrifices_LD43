@@ -13,19 +13,30 @@ public class Explosion : MonoBehaviour
 
     public void Boom()
     {
-        //gameObject.SetActive(true);
-
         particles.Play();
 
         // TODO Make Sphere params parameters
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, 3.0f);
         foreach (Collider hit in hitColliders)
         {
-            if (hit.gameObject.tag == "Enemy" || hit.gameObject.tag == "Player")
+            if (hit.gameObject.GetComponent<Enemy>() != null)
             {
-                //Do Damage
-                Debug.Log("Doing Damage to : " + hit.name);
+                hit.gameObject.GetComponent<Enemy>().Damage();
             }
+            else if (hit.gameObject.GetComponent<Player>() != null)
+            {
+                hit.gameObject.GetComponent<Player>().Damage();
+            }
+        }
+    }
+
+    void OnDrawGizmos()
+    {
+        // DEBUG
+        if (particles && particles.isPlaying)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(transform.position, 3.0f);
         }
     }
 

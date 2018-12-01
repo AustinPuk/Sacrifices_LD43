@@ -23,14 +23,33 @@ public class MinionPool : MonoBehaviour
     // Update is called once per frame
     void Update ()
     {
-        
+    }
+
+    void OnDrawGizmos()
+    {
+        // DEBUG
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(player.transform.position, minimumShootDistance);
+    }
+
+    public void Gather()
+    {
+        foreach  (Minion minion in minions)
+        {
+            if (minion.IsInactive)
+            {
+                following.Add(minion);
+                minion.Follow();
+                return;
+            }
+        }
     }
 
     public bool Shoot(Vector3 shootDirection)
     {
         // Finds minion closest to the player (only check minions that are following player)
         Minion closestMinion = null;
-        float closestDist = minimumShootDistance;
+        float closestDist = minimumShootDistance * minimumShootDistance;
         foreach (Minion minion in following)
         {
             float dist = Vector3.SqrMagnitude(player.transform.position - minion.transform.position);

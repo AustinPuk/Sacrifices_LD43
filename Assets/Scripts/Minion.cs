@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AI;
 
 public class Minion : MonoBehaviour
 {
@@ -21,7 +20,6 @@ public class Minion : MonoBehaviour
     float speedBoost = 3.0f;
 
     Vector3 movementVector;
-    //NavMeshAgent nav;
 
     Rigidbody rb;
 
@@ -30,10 +28,11 @@ public class Minion : MonoBehaviour
     [SerializeField]
     Explosion explosion; // TODO :Better way to pass object
 
+    public bool IsInactive { get { return state == MinionState.Inactive; } }
+
     enum MinionState
     {
-        Hidden,
-        Idle,
+        Inactive,
         Follow,
         ShootPrep, // Go to Front of Player (shootDest)
         ShootReady, // Signal Pre-Shoot Animation
@@ -71,10 +70,11 @@ public class Minion : MonoBehaviour
 
     void Start()
     {
-        //nav = GetComponent<NavMeshAgent>();
         rb = GetComponent<Rigidbody>();
+        GetComponent<Collider>().isTrigger = true;
+        state = MinionState.Inactive;
         // TEMP
-        Follow();
+        //Follow();
     }
 
     void Update()
@@ -99,16 +99,11 @@ public class Minion : MonoBehaviour
             Vector3 destination = king.transform.position + (king.transform.forward * -followDistance);
             Vector3 movementVector = destination - transform.position;
 
-            // Utilizing Character Controller for Movement
-            //controller.Move(movementVector * movementSpeed * Time.deltaTime);
-
             float dist = Vector3.SqrMagnitude(king.transform.position - transform.position);
             if (dist >= stopDistance)
                 rb.velocity = movementVector * movementSpeed;
             else
                 rb.velocity = Vector3.zero;
-
-            //nav.SetDestination(destination);
 
             // Character tries to face in direction of movement vector.
             //if (movementVector != Vector3.zero)
@@ -122,9 +117,6 @@ public class Minion : MonoBehaviour
             float destThreshold = 0.1f; // temp
             if (Vector3.SqrMagnitude(movementVector) > destThreshold)
             {
-                // Utilizing Character Controller for Movement
-                //controller.Move(movementVector * movementSpeed * speedBoost * Time.deltaTime);
-                //nav.SetDestination(shootDest);
                 rb.velocity = movementVector * movementSpeed * speedBoost;
 
                 // Character tries to face in direction of movement vector.
@@ -134,7 +126,6 @@ public class Minion : MonoBehaviour
             else // Arrived to destination
             {
                 // Look in proper direction
-                //nav.isStopped = true;
                 rb.velocity = Vector3.zero;
                 transform.LookAt(shootDest + (shootDest - king.transform.position) * 5.0f, transform.up); // untested
                 ShootPrepAnimation();
@@ -142,10 +133,8 @@ public class Minion : MonoBehaviour
         }
         else if (state == MinionState.Shoot)
         {
-            Debug.Log("Minion : Shooting");
             Vector3 movementVector = transform.forward;
             GetComponent<Rigidbody>().velocity = movementVector * movementSpeed * speedBoost;
-            //controller.Move(movementVector * movementSpeed * speedBoost * Time.deltaTime);
         }
 
         //TODO : Logic for when coming out of castle
@@ -164,12 +153,11 @@ public class Minion : MonoBehaviour
 
     void Boom()
     {
-        Debug.Log("Minion : BOOM HIT SOMETHING");
 
-        state = MinionState.Idle; // TEMP
+        state = MinionState.Dead; // TEMP
         rb.velocity = Vector3.zero;
         explosion.Boom();
-        Die();
+        StartCoroutine(Die());
 
         // Initiate explosion sequence
 
@@ -183,7 +171,6 @@ public class Minion : MonoBehaviour
 
     void ShootPrepAnimation()
     {
-        Debug.Log("Minion : Prep Animation Ready");
         state = MinionState.ShootReady;
         // Play and wait for Build Up Animation (should be quick)
 
@@ -194,8 +181,10 @@ public class Minion : MonoBehaviour
         state = MinionState.Shoot;
     }
 
-    void Die()
+    IEnumerator Die()
     {
         // TODO
+        yield return new WaitForSeconds(0.5f);
+        transform.position = Vector3.down * 10.0f;
     }
 }

@@ -33,6 +33,11 @@ public class Player : MonoBehaviour
         StartCoroutine(ShootAnimation());
     }
 
+    public void Damage()
+    {
+        Debug.Log("Player takes damage");
+    }
+
     /*
      *  Main Functions
      */
@@ -74,7 +79,6 @@ public class Player : MonoBehaviour
 
     IEnumerator ShootAnimation()
     {
-        Debug.Log("Player is Shooting");
         yield return new WaitForSeconds(0.5f); // TEMP
         state = PlayerState.Active;
     }
