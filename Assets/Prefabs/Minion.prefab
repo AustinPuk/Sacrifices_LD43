@@ -616,7 +616,9 @@ MonoBehaviour:
   particleShootReady: {fileID: 198056081889556124}
   particleShootTrail: {fileID: 198072089778711072}
   particleSelfDestruct: {fileID: 198496745878450222}
-  selfDestructCount: 20
+  selfDestructTime: 5
+  selfDestructRefresh: 5
+  selfDestructTimer: 5
 --- !u!114 &114285096327527588
 MonoBehaviour:
   m_ObjectHideFlags: 1

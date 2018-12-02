@@ -29,16 +29,16 @@ public class Explosion : MonoBehaviour
             }
         }
 
-        // Minions can now get hit by eachother's explosions, but at shorter range
-        hitColliders = Physics.OverlapSphere(transform.position, 2.0f);
-        foreach (Collider hit in hitColliders)
-        {
-            if (hit.gameObject.GetComponent<Minion>() != null && 
-                hit.gameObject.GetComponent<Minion>() != GetComponentInParent<Minion>())
-            {
-                hit.gameObject.GetComponent<Minion>().Damage();
-            }
-        }
+        //// Minions can now get hit by eachother's explosions, but at shorter range
+        //hitColliders = Physics.OverlapSphere(transform.position, 2.0f);
+        //foreach (Collider hit in hitColliders)
+        //{
+        //    if (hit.gameObject.GetComponent<Minion>() != null && 
+        //        hit.gameObject.GetComponent<Minion>() != GetComponentInParent<Minion>())
+        //    {
+        //        hit.gameObject.GetComponent<Minion>().Damage();
+        //    }
+        //}
     }
 
     void OnDrawGizmos()

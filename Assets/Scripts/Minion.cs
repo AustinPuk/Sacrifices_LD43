@@ -20,6 +20,7 @@ public class Minion : MonoBehaviour
     Rigidbody rb;
     Animator animator;
     Vector3 shootDest;
+    Vector3 shootDir;
     Player king;
 
     [SerializeField]
@@ -35,7 +36,12 @@ public class Minion : MonoBehaviour
     ParticleSystem particleSelfDestruct;
 
     [SerializeField]
-    int selfDestructCount; // Self destructs if collides with enemy too many times (surrounded)
+    float selfDestructTime; // Self destructs if collides with enemies for too long (surrounded)
+
+    [SerializeField]
+    float selfDestructRefresh; // Time it takes to refresh the selfDestructTimer
+
+    public float selfDestructTimer;
 
     public bool IsInactive { get { return state == MinionState.Inactive; } }
 
@@ -64,12 +70,13 @@ public class Minion : MonoBehaviour
         state = MinionState.Follow;
     }
 
-    public void Shoot(Vector3 shootDirection)
+    public void Shoot(Vector3 shootOrigin, Vector3 shootDirection)
     {
         // TEMP Set as trigger to avoid collisions. In the future, want to have the minion properly walk around the player.
         GetComponent<Collider>().isTrigger = true;
 
-        shootDest = king.transform.position + (shootDirection * followDistance);
+        shootDest = shootOrigin;
+        shootDir = shootDirection;
         StartCoroutine(ShootPrep());
     }
 
@@ -88,6 +95,7 @@ public class Minion : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         animator = GetComponentInChildren<Animator>();
+        selfDestructTimer = selfDestructTime;
     }
 
     void Update()
@@ -96,6 +104,26 @@ public class Minion : MonoBehaviour
             king = Game.game.player;
 
         HandleMovement();
+
+        // Self Destruct Cooldown Refresher Over Time
+        if (selfDestructTimer < selfDestructTime)
+        {
+            // Refreshes cooldown slightly over time. Should take selfDestructRefresh seconds to get back to max
+            selfDestructTimer += (Time.deltaTime / selfDestructRefresh) * selfDestructTime;
+            selfDestructTimer = Mathf.Min(selfDestructTime, selfDestructTimer);
+        }
+
+        // Particle Showing only if timer is below half
+        if (selfDestructTimer <= selfDestructTime / 2.0f)
+        {
+            if (!particleSelfDestruct.isPlaying)
+                particleSelfDestruct.Play();
+        }
+        else
+        {
+            if (particleSelfDestruct.isPlaying)
+                particleSelfDestruct.Stop();
+        }
     }
 
     void HandleMovement()
@@ -149,7 +177,7 @@ public class Minion : MonoBehaviour
 
             // Look in proper direction
             rb.velocity = Vector3.zero;
-            transform.LookAt(king.transform.position + (shootDest - king.transform.position) * 5.0f, transform.up);
+            transform.LookAt(shootDest + (shootDir * 5.0f), transform.up);
 
             ShootAnimation();
         }
@@ -162,15 +190,20 @@ public class Minion : MonoBehaviour
         //TODO : Logic for when coming out of castle
     }
 
-    void OnCollisionEnter(Collision collision)
+    void OnCollisionStay(Collision collision)
     {
         if (state == MinionState.Follow && collision.gameObject.tag == "Enemy")
         {
-            // Self Destructs on touching enemy
-            selfDestructCount--;
+            Debug.Log(" Self Destruct : " + selfDestructTimer);
 
-            if (selfDestructCount <= 0)
+            // Self Destructs on touching enemy
+            selfDestructTimer -= Time.deltaTime * 2.0f; // Times two to counteract refresh.... TODO
+
+            if (selfDestructTimer <= 0)
+            {
+                Debug.Log("Delayed Boom");
                 StartCoroutine(DelayedBoom());
+            }
         }
     }
 
@@ -262,7 +295,6 @@ public class Minion : MonoBehaviour
         Game.game.minionPool.ForcedRemove(this);
         state = MinionState.Exploding;
         animator.SetTrigger("Spin");
-        particleSelfDestruct.Play();
         yield return new WaitForSeconds(0.3f);
         Boom();
     }

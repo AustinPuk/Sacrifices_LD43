@@ -45,7 +45,7 @@ public class MinionPool : MonoBehaviour
         return;
     }
 
-    public bool Shoot(Vector3 shootDirection)
+    public bool Shoot(Vector3 shootOrigin, Vector3 shootDirection)
     {
         // Finds minion closest to the player (only check minions that are following player)
         Minion closestMinion = null;
@@ -65,7 +65,7 @@ public class MinionPool : MonoBehaviour
         else
         {
             following.Remove(closestMinion);
-            closestMinion.Shoot(shootDirection);
+            closestMinion.Shoot(shootOrigin, shootDirection);
             return true;
         }
     }

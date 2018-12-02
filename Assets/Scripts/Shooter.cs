@@ -45,7 +45,9 @@ public class Shooter : MonoBehaviour
                 Debug.DrawRay(player.transform.position, shootDirection * 100.0f, Color.red, 1.0f);
                 Debug.DrawRay(hit.point, Vector3.up * 100.0f, Color.blue, 1.0f);
 
-                bool minionAvailable = minionPool.Shoot(shootDirection); // Tells the closest minion to be shot. False if no minion close enough.
+                // Tells the closest minion to be shot. False if no minion close enough.
+                // 2.0f is hardcoded value of Minion's Follow Distance.
+                bool minionAvailable = minionPool.Shoot(player.transform.position + (shootDirection * 2.0f), shootDirection);
 
                 if (minionAvailable)
                 {
