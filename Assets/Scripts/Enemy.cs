@@ -28,7 +28,7 @@ public class Enemy : MonoBehaviour
         Dead
     }
 
-    EnemyState state;
+    EnemyState state = EnemyState.Inactive;
 
     public bool IsInactive { get { return state == EnemyState.Inactive || state == EnemyState.Dead; } }
 
@@ -38,19 +38,13 @@ public class Enemy : MonoBehaviour
      *  Public Functions
      */
 
-    public void Spawn(Vector3 spawnLocation)
+    public void Spawned()
     {
-        animator.SetTrigger("Reset");
         state = EnemyState.Follow;
-        transform.position = spawnLocation;
-        if (enemyCollider)
-            enemyCollider.enabled = true;
-        // Moves enemy to spawn location
     }
 
     public void Damage()
     {
-        Debug.Log("Enemy takes Damage");
         StartCoroutine(TakeDamage());
     }
 
@@ -63,9 +57,9 @@ public class Enemy : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         enemyCollider = GetComponent<Collider>();
         animator = GetComponentInChildren<Animator>();
-        //Temp
-        state = EnemyState.Inactive;
-        movementSpeed *= Random.Range(0.8f, 1.1f);
+        
+
+        movementSpeed *= Random.Range(0.5f, 1.5f);
     }
 
     void Update()
@@ -128,7 +122,7 @@ public class Enemy : MonoBehaviour
     {
         //TODO
         animator.SetTrigger("Dead");
-        transform.position = Vector3.down * 10.0f;
+        Destroy(gameObject);
     }
 
     IEnumerator Attack()

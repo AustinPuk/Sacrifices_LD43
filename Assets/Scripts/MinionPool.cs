@@ -4,15 +4,18 @@ using UnityEngine;
 
 public class MinionPool : MonoBehaviour
 {
-    [SerializeField]
-    GameObject player; // TODO : Pass this from Game object instead.
-
     // Minimum distance a minion needs to be from the player to be shot
     [SerializeField]
-    float minimumShootDistance = 2.0f;
+    float minimumShootDistance;
 
     [SerializeField]
-    int maxFollowers = 50;
+    int maxFollowers;
+
+    [SerializeField]
+    Transform spawnLocation;
+
+    [SerializeField]
+    GameObject minionPrefab;
 
     List<Minion> minions;
     List<Minion> following;
@@ -22,7 +25,6 @@ public class MinionPool : MonoBehaviour
 
     void Start ()
     {
-        minions = new List<Minion>(GetComponentsInChildren<Minion>());
         following = new List<Minion>();
     }
     
@@ -36,15 +38,11 @@ public class MinionPool : MonoBehaviour
         if (following.Count >= maxFollowers)
             return;
 
-        foreach  (Minion minion in minions)
-        {
-            if (minion.IsInactive)
-            {
-                following.Add(minion);
-                minion.Follow();
-                return;
-            }
-        }
+        GameObject newMinionObject = Instantiate(minionPrefab, spawnLocation.position, Quaternion.identity, transform);
+        Minion newMinion = newMinionObject.GetComponent<Minion>();
+        following.Add(newMinion);
+        newMinion.Follow();
+        return;
     }
 
     public bool Shoot(Vector3 shootDirection)
@@ -54,7 +52,7 @@ public class MinionPool : MonoBehaviour
         float closestDist = minimumShootDistance * minimumShootDistance;
         foreach (Minion minion in following)
         {
-            float dist = Vector3.SqrMagnitude(player.transform.position - minion.transform.position);
+            float dist = Vector3.SqrMagnitude(Game.game.player.transform.position - minion.transform.position);
             if ( dist < closestDist)
             {
                 closestDist = dist;

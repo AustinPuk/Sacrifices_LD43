@@ -8,9 +8,6 @@ public class Minion : MonoBehaviour
     float movementSpeed = 5;
 
     [SerializeField]
-    GameObject king; // TODO : Pass the player object from MinionPool instead.
-
-    [SerializeField]
     float followDistance;
 
     [SerializeField]
@@ -23,6 +20,7 @@ public class Minion : MonoBehaviour
     Rigidbody rb;
     Animator animator;
     Vector3 shootDest;
+    Player king;
 
     [SerializeField]
     Explosion explosion; // TODO :Better way to pass object
@@ -47,7 +45,7 @@ public class Minion : MonoBehaviour
         Dead   // ?
     }
 
-    MinionState state;
+    MinionState state = MinionState.Inactive;
 
     /*
     * Public Commands called from MinionPool
@@ -78,14 +76,13 @@ public class Minion : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         animator = GetComponentInChildren<Animator>();
-        GetComponent<Collider>().isTrigger = true;
-        state = MinionState.Inactive;
-        // TEMP
-        //Follow();
     }
 
     void Update()
     {
+        if (!king)
+            king = Game.game.player;
+
         HandleMovement();
     }
 
@@ -219,6 +216,7 @@ public class Minion : MonoBehaviour
         particleShootTrail.Stop();
         animator.SetTrigger("Dead");
         yield return new WaitForSeconds(0.5f);
-        transform.position = Vector3.down * 10.0f;
+        //transform.position = Vector3.down * 10.0f;
+        Destroy(gameObject); // Temporarily going with this for now
     }
 }
