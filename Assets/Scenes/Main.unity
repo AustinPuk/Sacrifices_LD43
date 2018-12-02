@@ -7000,7 +7000,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.84313726, g: 1, b: 0.96062934, a: 1}
+  m_Color: {r: 0.84313726, g: 1, b: 0.9607843, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -9673,6 +9673,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 353527789}
+  - component: {fileID: 353527790}
   m_Layer: 5
   m_Name: MinionCount
   m_TagString: Untagged
@@ -9702,6 +9703,19 @@ RectTransform:
   m_AnchoredPosition: {x: 83.8, y: -311}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &353527790
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 353527788}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 52a93a245c46d83429ba0eb0bddb44d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  counter: {fileID: 736370556}
+  gauge: {fileID: 1562628442}
 --- !u!1001 &354844138
 Prefab:
   m_ObjectHideFlags: 0
@@ -10460,6 +10474,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 415653707}
+  - component: {fileID: 415653708}
   m_Layer: 5
   m_Name: WaveCount
   m_TagString: Untagged
@@ -10491,6 +10506,18 @@ RectTransform:
   m_AnchoredPosition: {x: -78, y: -94}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &415653708
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 415653706}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 284740f9e6e7e814bacba4617efcc30a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  counter: {fileID: 2999312}
 --- !u!1001 &417797327
 Prefab:
   m_ObjectHideFlags: 0
@@ -16293,6 +16320,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 843404872}
+  - component: {fileID: 843404873}
   m_Layer: 5
   m_Name: HealthBar
   m_TagString: Untagged
@@ -16321,6 +16349,18 @@ RectTransform:
   m_AnchoredPosition: {x: 125.2, y: -123.8}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &843404873
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 843404871}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b202da317c928742935b4ce3f80990f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthGauge: {fileID: 1135868366}
 --- !u!1001 &845868881
 Prefab:
   m_ObjectHideFlags: 0
@@ -17440,6 +17480,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 920714209}
+  - component: {fileID: 920714210}
   m_Layer: 5
   m_Name: MinionBar
   m_TagString: Untagged
@@ -17468,6 +17509,18 @@ RectTransform:
   m_AnchoredPosition: {x: 229.7, y: -277.9}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &920714210
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 920714208}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2cfa181ea544cb745ac3ba773942bc79, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gauge: {fileID: 664490505}
 --- !u!1 &921541442
 GameObject:
   m_ObjectHideFlags: 0
@@ -20125,7 +20178,7 @@ MonoBehaviour:
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
-  m_FillAmount: 0.737
+  m_FillAmount: 0.89
   m_FillClockwise: 0
   m_FillOrigin: 2
 --- !u!222 &1135868367
@@ -24869,8 +24922,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6030db05ebc135469aa85769655343d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 1327191047}
-  minionPool: {fileID: 1575135172}
   cooldown: 2
 --- !u!114 &1476978021
 MonoBehaviour:
@@ -24885,7 +24936,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 1327191047}
   minionPool: {fileID: 1575135172}
+  shooter: {fileID: 1476978020}
   isRunning: 1
+  minionsDead: 0
+  waveCurrent: 1
 --- !u!4 &1476978022
 Transform:
   m_ObjectHideFlags: 0
@@ -29591,6 +29645,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1855658008}
+  - component: {fileID: 1855658009}
   m_Layer: 5
   m_Name: DeadCount
   m_TagString: Untagged
@@ -29620,6 +29675,18 @@ RectTransform:
   m_AnchoredPosition: {x: 243, y: 136}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1855658009
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1855658007}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9357c7e5c80763d468c1a60a64fba554, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  counter: {fileID: 1940997720}
 --- !u!4 &1857559209 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400004, guid: 9b758d1db03a1024b845fcf44df3eefd,

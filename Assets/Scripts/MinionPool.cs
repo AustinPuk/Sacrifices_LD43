@@ -12,10 +12,13 @@ public class MinionPool : MonoBehaviour
     float minimumShootDistance = 2.0f;
 
     [SerializeField]
-    int maxFollowers = 20;
+    int maxFollowers = 50;
 
     List<Minion> minions;
     List<Minion> following;
+
+    public int FollowerCount { get { return following.Count; } }
+    public float FollowerPercentage { get { return (float) FollowerCount / (float) maxFollowers; } }
 
     void Start ()
     {

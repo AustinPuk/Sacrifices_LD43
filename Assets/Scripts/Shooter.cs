@@ -7,17 +7,12 @@ using UnityEngine;
 public class Shooter : MonoBehaviour
 {
     [SerializeField]
-    Player player; // TODO : Probably have a "Game" class that pass these in instead of setting it this way
-
-    [SerializeField]
-    MinionPool minionPool; // TODO : ^
-
-    [SerializeField]
     float cooldown;
 
     bool onCooldown;
+    float cooldownTimer;
 
-    // TODO : Cooldown Logic
+    public float CooldownPercent { get { return cooldownTimer / cooldown; } }
 
     void Start ()
     {
@@ -29,11 +24,16 @@ public class Shooter : MonoBehaviour
         if (!Game.game.isRunning)
             return;
 
+        CooldownCheck();
         ProcessMouse();
     }
 
     void ProcessMouse()
     {
+
+        Player player = Game.game.player;
+        MinionPool minionPool = Game.game.minionPool;
+
         if (Input.GetMouseButtonDown(0) &&  !onCooldown)
         {
             RaycastHit hit;
@@ -50,7 +50,8 @@ public class Shooter : MonoBehaviour
                 if (minionAvailable)
                 {
                     player.Shoot(shootDirection); // Causes player to play a shooting animation and face in said direction momentarily. 
-                    StartCoroutine(Cooldown());
+                    onCooldown = true;
+                    cooldownTimer = cooldown;
                 }
                 
                 //else Play Buzzer / Visual Indicator for failed shoot
@@ -58,10 +59,14 @@ public class Shooter : MonoBehaviour
         }
     }
 
-    IEnumerator Cooldown()
+    void CooldownCheck()
     {
-        onCooldown = true;
-        yield return new WaitForSeconds(cooldown);
-        onCooldown = false;
+        cooldownTimer -= Time.deltaTime;
+
+        if (cooldownTimer <= 0.0f)
+        {
+            cooldownTimer = 0.0f;
+            onCooldown = false;
+        }
     }
 }

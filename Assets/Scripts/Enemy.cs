@@ -140,6 +140,10 @@ public class Enemy : MonoBehaviour
 
         animator.SetTrigger("Attack");
 
+        yield return new WaitForSeconds(0.1f); // TODO : Attack Delay
+
+        Game.game.player.Damage();
+
         yield return new WaitForSeconds(attackCooldown);
 
         state = EnemyState.Follow;

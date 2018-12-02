@@ -214,6 +214,7 @@ public class Minion : MonoBehaviour
     IEnumerator Die()
     {
         // TODO
+        Game.game.MinionDies();
         particleShootReady.Stop();
         particleShootTrail.Stop();
         animator.SetTrigger("Dead");

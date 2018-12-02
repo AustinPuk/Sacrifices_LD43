@@ -10,6 +10,11 @@ public class Player : MonoBehaviour
     [SerializeField]
     float shootDelay = 0.5f;
 
+    [SerializeField]
+    float maxHealth = 10.0f;
+
+    float currentHealth;
+
     Vector3 movementVector;
     Rigidbody rb;
     Animator animator;
@@ -22,6 +27,8 @@ public class Player : MonoBehaviour
     }
 
     PlayerState state;
+
+    public float HealthPercent { get { return currentHealth / maxHealth; } }
 
     /*
      *  Public Functions
@@ -39,7 +46,13 @@ public class Player : MonoBehaviour
 
     public void Damage()
     {
-        Debug.Log("Player takes damage");
+        currentHealth -= 1.0f; // TODO
+
+        if (currentHealth <= 0.0f)
+        {
+            currentHealth = 0.0f;
+            Debug.Log("Player has lost");
+        }
     }
 
     /*
@@ -50,7 +63,10 @@ public class Player : MonoBehaviour
         //controller = GetComponent<CharacterController>();
         rb = GetComponent<Rigidbody>();
         animator = GetComponentInChildren<Animator>();
-        //Temp
+
+        currentHealth = maxHealth;
+
+        //Temp. Should be activated by Game Manager
         state = PlayerState.Active;
     }
 

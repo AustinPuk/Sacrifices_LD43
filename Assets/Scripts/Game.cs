@@ -13,7 +13,14 @@ public class Game : MonoBehaviour
     [SerializeField]
     public MinionPool minionPool;
 
+    [SerializeField]
+    public Shooter shooter;
+
     public bool isRunning = true;
+
+    public int minionsDead = 0;
+
+    public int waveCurrent = 1;
 
     void Start ()
     {
@@ -24,5 +31,11 @@ public class Game : MonoBehaviour
     void Update ()
     {
         
+    }
+
+
+    public void MinionDies()
+    {
+        minionsDead++;
     }
 }
