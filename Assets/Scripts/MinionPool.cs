@@ -23,7 +23,7 @@ public class MinionPool : MonoBehaviour
     public int FollowerCount { get { return following.Count; } }
     public float FollowerPercentage { get { return (float) FollowerCount / (float) maxFollowers; } }
 
-    void Start ()
+    void Awake ()
     {
         following = new List<Minion>();
     }
@@ -68,5 +68,21 @@ public class MinionPool : MonoBehaviour
             closestMinion.Shoot(shootDirection);
             return true;
         }
+    }
+
+    public void Restart()
+    {
+        foreach (Minion minion in following)
+        {
+            Destroy(minion.gameObject); // TODO : Check if it's safe to destroy in for loop
+        }
+
+        following.Clear();
+    }
+
+    public void ForcedRemove(Minion minion)
+    {
+        if (following.Contains(minion))
+            following.Remove(minion);
     }
 }

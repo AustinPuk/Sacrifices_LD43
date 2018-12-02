@@ -9,34 +9,40 @@ public class EnemyPool : MonoBehaviour
     GameObject spawnLocationsObject;
 
     [SerializeField]
-    float spawnTimer;
-
-    [SerializeField]
     GameObject enemy;
 
     List<Vector3> spawnLocations;
-
     Coroutine spawner;
 
-    void Start()
+    public void Restart()
+    {
+        StopSpawn();
+        foreach (Transform child in transform)
+        {
+            if (child.gameObject.GetComponent<Enemy>() != null)
+                Destroy(child.gameObject); // TODO : Check if it's safe to destroy in for loop
+        }
+    }
+
+    public void SpawnWave(int numEnemies, float spawnTimer)
     {
         spawnLocations = new List<Vector3>();
         foreach (Transform child in spawnLocationsObject.transform)
         {
             spawnLocations.Add(child.position);
         }
-        spawner = StartCoroutine(SpawnTimer());
+        spawner = StartCoroutine(SpawnTimer(numEnemies, spawnTimer));
     }
 
-    // Update is called once per frame
-    void Update ()
+    public void StopSpawn()
     {
-        
+        if (spawner != null)
+            StopCoroutine(spawner);
     }
 
-    IEnumerator SpawnTimer()
+    IEnumerator SpawnTimer(int numEnemies, float spawnTimer)
     {
-        while(true)
+        for (int i = 0; i < numEnemies; i++)
         {
             GameObject newEnemy = Instantiate(enemy, spawnLocations[Random.Range(0, spawnLocations.Count - 1)], Quaternion.identity, transform);
             newEnemy.GetComponent<Enemy>().Spawned();

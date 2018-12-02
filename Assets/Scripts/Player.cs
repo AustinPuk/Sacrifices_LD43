@@ -51,14 +51,20 @@ public class Player : MonoBehaviour
         if (currentHealth <= 0.0f)
         {
             currentHealth = 0.0f;
-            Debug.Log("Player has lost");
+            Die();
         }
+    }
+
+    public void Restart()
+    {
+        state = PlayerState.Active;
+        currentHealth = maxHealth;
     }
 
     /*
      *  Main Functions
      */
-    void Start ()
+    void Awake ()
     {
         //controller = GetComponent<CharacterController>();
         rb = GetComponent<Rigidbody>();
@@ -97,6 +103,13 @@ public class Player : MonoBehaviour
             if (movementVector != Vector3.zero)
                 transform.LookAt(transform.position + Vector3.Slerp(transform.forward, movementVector, 0.8f), transform.up);
         }
+    }
+
+    void Die()
+    {
+        // TODO : Death Animation
+
+        Game.game.PlayerDies();
     }
 
     IEnumerator ShootAnimation()

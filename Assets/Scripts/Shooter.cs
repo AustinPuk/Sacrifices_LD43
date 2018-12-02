@@ -21,7 +21,7 @@ public class Shooter : MonoBehaviour
 
     void Update ()
     {
-        if (!Game.game.isRunning)
+        if (Game.game.isPaused)
             return;
 
         CooldownCheck();

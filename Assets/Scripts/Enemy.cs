@@ -51,7 +51,7 @@ public class Enemy : MonoBehaviour
     /*
      *  Main Functions
      */
-    void Start()
+    void Awake()
     {
         //controller = GetComponent<CharacterController>();
         rb = GetComponent<Rigidbody>();
@@ -122,6 +122,7 @@ public class Enemy : MonoBehaviour
     {
         //TODO
         animator.SetTrigger("Dead");
+        Game.game.EnemyDies();
         Destroy(gameObject);
     }
 

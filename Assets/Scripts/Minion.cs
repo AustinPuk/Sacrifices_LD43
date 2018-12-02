@@ -31,6 +31,12 @@ public class Minion : MonoBehaviour
     [SerializeField]
     ParticleSystem particleShootTrail;
 
+    [SerializeField]
+    ParticleSystem particleSelfDestruct;
+
+    [SerializeField]
+    int selfDestructCount; // Self destructs if collides with enemy too many times (surrounded)
+
     public bool IsInactive { get { return state == MinionState.Inactive; } }
 
     enum MinionState
@@ -42,6 +48,7 @@ public class Minion : MonoBehaviour
         ShootReady, // Signal Pre-Shoot Animation (Build Up)
         Shoot,      // Is being Shot, will explode on collision
         ShootFinish, // Post-shoot logic
+        Exploding,
         Dead   // ?
     }
 
@@ -59,8 +66,6 @@ public class Minion : MonoBehaviour
 
     public void Shoot(Vector3 shootDirection)
     {
-        Debug.Log("Minion : Shoot Prep");
-
         // TEMP Set as trigger to avoid collisions. In the future, want to have the minion properly walk around the player.
         GetComponent<Collider>().isTrigger = true;
 
@@ -68,11 +73,18 @@ public class Minion : MonoBehaviour
         StartCoroutine(ShootPrep());
     }
 
+    public void Damage()
+    {
+        // TODO : Death Animation or Effect
+        if (state == MinionState.Follow)
+            StartCoroutine(DelayedBoom());
+    }
+
     /*
      *  Main Minion Commands
      */
 
-    void Start()
+    void Awake()
     {
         rb = GetComponent<Rigidbody>();
         animator = GetComponentInChildren<Animator>();
@@ -150,6 +162,18 @@ public class Minion : MonoBehaviour
         //TODO : Logic for when coming out of castle
     }
 
+    void OnCollisionEnter(Collision collision)
+    {
+        if (state == MinionState.Follow && collision.gameObject.tag == "Enemy")
+        {
+            // Self Destructs on touching enemy
+            selfDestructCount--;
+
+            if (selfDestructCount <= 0)
+                StartCoroutine(DelayedBoom());
+        }
+    }
+
     void OnTriggerEnter(Collider other)
     {
         if (state != MinionState.Shoot && state != MinionState.ShootReady)
@@ -163,6 +187,8 @@ public class Minion : MonoBehaviour
 
     void Boom()
     {
+
+        GetComponent<Collider>().enabled = false;
 
         state = MinionState.Dead; // TEMP
         rb.velocity = Vector3.zero;
@@ -206,6 +232,17 @@ public class Minion : MonoBehaviour
         particleShootTrail.Play();
 
         state = MinionState.Shoot;
+
+        // Check if already on top of a colliding object
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, 0.3f); // Hardcoded rn
+        foreach (Collider hit in hitColliders)
+        {
+            if (hit.gameObject.tag == "Environment" || hit.gameObject.tag == "Enemy")
+            {
+                Boom();
+                break;
+            }
+        }
     }
 
     IEnumerator Die()
@@ -218,5 +255,15 @@ public class Minion : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         //transform.position = Vector3.down * 10.0f;
         Destroy(gameObject); // Temporarily going with this for now
+    }
+
+    IEnumerator DelayedBoom()
+    {
+        Game.game.minionPool.ForcedRemove(this);
+        state = MinionState.Exploding;
+        animator.SetTrigger("Spin");
+        particleSelfDestruct.Play();
+        yield return new WaitForSeconds(0.3f);
+        Boom();
     }
 }
