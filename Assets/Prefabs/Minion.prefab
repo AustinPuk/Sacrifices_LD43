@@ -19,7 +19,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4975771964653582}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Arm_R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -35,7 +35,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4030602592973382}
   - component: {fileID: 137743143604474188}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -52,7 +52,7 @@ GameObject:
   - component: {fileID: 4003902232406280}
   - component: {fileID: 198496745878450222}
   - component: {fileID: 199440720190232642}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: ParticleConstant
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -67,7 +67,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4177918933440004}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Arm_L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -82,7 +82,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4648490170372770}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Leg_R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -100,7 +100,7 @@ GameObject:
   - component: {fileID: 54040875566928122}
   - component: {fileID: 135294584990449524}
   - component: {fileID: 114167976172211540}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Minion
   m_TagString: Minions
   m_Icon: {fileID: 0}
@@ -115,7 +115,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4225656512759312}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Armature
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -133,7 +133,7 @@ GameObject:
   - component: {fileID: 114285096327527588}
   - component: {fileID: 198709391812033168}
   - component: {fileID: 199551063605894830}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: ParticleExplosion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -150,7 +150,7 @@ GameObject:
   - component: {fileID: 4222222113370686}
   - component: {fileID: 198072089778711072}
   - component: {fileID: 199515734759226100}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: ParticleSpin
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -165,7 +165,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4587031316318458}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -182,7 +182,7 @@ GameObject:
   - component: {fileID: 4676164807099498}
   - component: {fileID: 198056081889556124}
   - component: {fileID: 199696445461322052}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: ParticlePrep
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -198,7 +198,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4976817670244854}
   - component: {fileID: 137360094144540808}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Sphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -213,7 +213,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4186621501298818}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Leg_L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -228,7 +228,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4179881111121608}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Root
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -244,7 +244,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4695913301308564}
   - component: {fileID: 95141702879544002}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Astra
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -261,7 +261,7 @@ GameObject:
   - component: {fileID: 4477808774055612}
   - component: {fileID: 33056956010164066}
   - component: {fileID: 23084198152015134}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: TempModel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
