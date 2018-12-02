@@ -20,13 +20,18 @@ public class Minion : MonoBehaviour
     float speedBoost = 3.0f;
 
     Vector3 movementVector;
-
     Rigidbody rb;
-
+    Animator animator;
     Vector3 shootDest;
 
     [SerializeField]
     Explosion explosion; // TODO :Better way to pass object
+
+    [SerializeField]
+    ParticleSystem particleShootReady;
+
+    [SerializeField]
+    ParticleSystem particleShootTrail;
 
     public bool IsInactive { get { return state == MinionState.Inactive; } }
 
@@ -34,8 +39,9 @@ public class Minion : MonoBehaviour
     {
         Inactive,
         Follow,
-        ShootPrep, // Go to Front of Player (shootDest)
-        ShootReady, // Signal Pre-Shoot Animation
+        ShootPrep, // Pre-Shoot Animation (spin)
+        ShootMove, // Move to Shoot Destination
+        ShootReady, // Signal Pre-Shoot Animation (Build Up)
         Shoot,      // Is being Shot, will explode on collision
         ShootFinish, // Post-shoot logic
         Dead   // ?
@@ -61,7 +67,7 @@ public class Minion : MonoBehaviour
         GetComponent<Collider>().isTrigger = true;
 
         shootDest = king.transform.position + (shootDirection * followDistance);
-        state = MinionState.ShootPrep;
+        StartCoroutine(ShootPrep());
     }
 
     /*
@@ -71,6 +77,7 @@ public class Minion : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        animator = GetComponentInChildren<Animator>();
         GetComponent<Collider>().isTrigger = true;
         state = MinionState.Inactive;
         // TEMP
@@ -97,42 +104,45 @@ public class Minion : MonoBehaviour
 
             // Go to area behind player
             Vector3 destination = king.transform.position + (king.transform.forward * -followDistance);
-            Vector3 movementVector = (destination - transform.position).normalized;
+            Vector3 movementVector = destination - transform.position;
 
-            float dist = Vector3.SqrMagnitude(king.transform.position - transform.position);
-            if (dist >= stopDistance)
-                rb.velocity = movementVector * movementSpeed;
+            float distToKing = Vector3.SqrMagnitude(king.transform.position - transform.position);
+            float distToDest = Vector3.SqrMagnitude(destination - transform.position);
+            float stopDistanceSqr = stopDistance * stopDistance;
+            if (distToKing < stopDistanceSqr || distToDest < stopDistanceSqr)
+                rb.velocity = movementVector * movementSpeed; // Slowed down for close distances
             else
-                rb.velocity = Vector3.zero;
+                rb.velocity = movementVector.normalized * movementSpeed; // Normalized for far distances
 
-            // Character tries to face in direction of movement vector.
-            if (movementVector != Vector3.zero)
-                transform.LookAt(transform.position + Vector3.Slerp(transform.forward, movementVector, 0.8f), transform.up);
+            // Minions always face player
+            transform.LookAt(king.transform.position, transform.up);
         }
-        else if (state == MinionState.ShootPrep)
+        else if (state == MinionState.ShootMove)
         {
             // Should speed to destination in front of player
-            Vector3 movementVector = (shootDest - transform.position).normalized;
+            Vector3 movementVector = shootDest - transform.position;
 
-            float destThreshold = 0.5f; // temp
+            float destThreshold = 0.3f; // temp
             if (Vector3.SqrMagnitude(shootDest - transform.position) > destThreshold * destThreshold)
             {
-                rb.velocity = movementVector * movementSpeed * speedBoost;
-
-                // Character tries to face in direction of movement vector.
-                if (movementVector != Vector3.zero)
-                    transform.LookAt(transform.position + Vector3.Slerp(transform.forward, movementVector, 0.8f), transform.up);
+                rb.velocity = movementVector.normalized * movementSpeed;
             }
-            else // Arrived to destination
+            else // Arrived to destination, Wait for ShootReady
             {
                 // Snap to proper location
-                transform.position = shootDest;
-
-                // Look in proper direction
-                rb.velocity = Vector3.zero;
-                transform.LookAt(transform.position + (transform.position - king.transform.position) * 5.0f, transform.up); // untested
-                ShootPrepAnimation();
+                rb.velocity = movementVector * movementSpeed;
             }
+        }
+        else if (state == MinionState.ShootReady)
+        {
+            // Snap to proper location
+            transform.position = shootDest;
+
+            // Look in proper direction
+            rb.velocity = Vector3.zero;
+            transform.LookAt(king.transform.position + (shootDest - king.transform.position) * 5.0f, transform.up);
+
+            ShootAnimation();
         }
         else if (state == MinionState.Shoot)
         {
@@ -145,7 +155,7 @@ public class Minion : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (state != MinionState.Shoot && state != MinionState.ShootPrep)
+        if (state != MinionState.Shoot && state != MinionState.ShootReady)
             return;
 
         if (other.tag == "Environment" || other.tag == "Enemy")
@@ -172,14 +182,31 @@ public class Minion : MonoBehaviour
         // BONUS : Make minions stay dead on battlefield
     }
 
-    void ShootPrepAnimation()
+    IEnumerator ShootPrep()
     {
-        state = MinionState.ShootReady;
         // Play and wait for Build Up Animation (should be quick)
+        rb.velocity = Vector3.zero;
+        transform.LookAt(king.transform.position + (shootDest - king.transform.position) * 10.0f, transform.up);
+        state = MinionState.ShootPrep;
+        animator.SetTrigger("Spin");
+        yield return new WaitForSeconds(0.2f);
 
-        // Wait for animation 
+        // Move to position
+        state = MinionState.ShootMove;
 
-        // Play Particles plus shooting animation
+        // TODO :Properly time end of animation
+        yield return new WaitForSeconds(0.4f);
+
+        // Minion ready shoot
+        state = MinionState.ShootReady;
+    }
+
+    void ShootAnimation()
+    {
+        animator.SetTrigger("Shoot");
+
+        particleShootReady.Play();
+        particleShootTrail.Play();
 
         state = MinionState.Shoot;
     }
@@ -187,6 +214,9 @@ public class Minion : MonoBehaviour
     IEnumerator Die()
     {
         // TODO
+        particleShootReady.Stop();
+        particleShootTrail.Stop();
+        animator.SetTrigger("Dead");
         yield return new WaitForSeconds(0.5f);
         transform.position = Vector3.down * 10.0f;
     }

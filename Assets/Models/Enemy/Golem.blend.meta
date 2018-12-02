@@ -28,7 +28,12 @@ ModelImporter:
     13700000: Sphere
     13700002: Sphere_001
     2186277476908879412: ImportLogs
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: EnemyEye
+    second: {fileID: 2100000, guid: 10c9b529ca9699e48ba67fc4de9e1e93, type: 2}
   materials:
     importMaterials: 1
     materialName: 0
@@ -135,7 +140,7 @@ ModelImporter:
     secondaryUVHardAngle: 88
     secondaryUVPackMargin: 4
     useFileScale: 1
-    previousCalculatedGlobalScale: 0.5
+    previousCalculatedGlobalScale: 0.4
     hasPreviousCalculatedGlobalScale: 1
   tangentSpace:
     normalSmoothAngle: 60

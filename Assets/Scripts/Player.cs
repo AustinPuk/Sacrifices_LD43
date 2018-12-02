@@ -7,9 +7,11 @@ public class Player : MonoBehaviour
     [SerializeField]
     float movementSpeed = 5;
 
+    [SerializeField]
+    float shootDelay = 0.5f;
+
     Vector3 movementVector;
     Rigidbody rb;
-
     Animator animator;
 
     enum PlayerState
@@ -83,7 +85,9 @@ public class Player : MonoBehaviour
 
     IEnumerator ShootAnimation()
     {
-        yield return new WaitForSeconds(0.5f); // TEMP
+        animator.SetTrigger("Shoot");
+        yield return new WaitForSeconds(shootDelay);
+        animator.SetTrigger("ShootEnd");
         state = PlayerState.Active;
     }
 }

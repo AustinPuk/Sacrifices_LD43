@@ -10,9 +10,13 @@ public class Enemy : MonoBehaviour
     [SerializeField]
     float attackDistance;
 
+    [SerializeField]
+    float attackCooldown;
+
     Rigidbody rb;
-    Collider collider;
+    Collider enemyCollider;
     GameObject player;
+    Animator animator;
 
     enum EnemyState
     {
@@ -36,10 +40,11 @@ public class Enemy : MonoBehaviour
 
     public void Spawn(Vector3 spawnLocation)
     {
+        animator.SetTrigger("Reset");
         state = EnemyState.Follow;
         transform.position = spawnLocation;
-        if (collider)
-            collider.enabled = true;
+        if (enemyCollider)
+            enemyCollider.enabled = true;
         // Moves enemy to spawn location
     }
 
@@ -56,7 +61,8 @@ public class Enemy : MonoBehaviour
     {
         //controller = GetComponent<CharacterController>();
         rb = GetComponent<Rigidbody>();
-        collider = GetComponent<Collider>();
+        enemyCollider = GetComponent<Collider>();
+        animator = GetComponentInChildren<Animator>();
         //Temp
         state = EnemyState.Inactive;
         movementSpeed *= Random.Range(0.8f, 1.1f);
@@ -121,6 +127,7 @@ public class Enemy : MonoBehaviour
     void Dead()
     {
         //TODO
+        animator.SetTrigger("Dead");
         transform.position = Vector3.down * 10.0f;
     }
 
@@ -131,9 +138,9 @@ public class Enemy : MonoBehaviour
         state = EnemyState.Attack;
         // TODO : Attacks should have a few frames of delay before the attack, sync with animation
 
-        Debug.Log("Enemy : Attacking");
+        animator.SetTrigger("Attack");
 
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(attackCooldown);
 
         state = EnemyState.Follow;
         // TODO 
