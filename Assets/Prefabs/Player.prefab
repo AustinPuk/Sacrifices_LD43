@@ -448,15 +448,15 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1541210107509622}
-  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4359113621194434}
   - {fileID: 4234486352830966}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4972437879476182
 Transform:
   m_ObjectHideFlags: 1
@@ -616,8 +616,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movementSpeed: 5
   shootDelay: 0.5
-  maxHealth: 100
-  knockbackForce: 10
+  maxHealth: 20
+  knockbackForce: 15
   knockbackTime: 0.5
   invincibleTime: 2
 --- !u!136 &136008422889437008

@@ -103,6 +103,9 @@ public class Minion : MonoBehaviour
 
     void Update()
     {
+        if (Game.game.isPaused)
+            return;
+
         if (!king)
             king = Game.game.player;
 

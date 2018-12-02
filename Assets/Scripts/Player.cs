@@ -101,6 +101,9 @@ public class Player : MonoBehaviour
 
     void Update ()
     {
+        if (Game.game.isPaused)
+            return;
+
         ProcessInput();
         HandleMovement();
     }

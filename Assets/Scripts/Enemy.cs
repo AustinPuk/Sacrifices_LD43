@@ -64,6 +64,9 @@ public class Enemy : MonoBehaviour
 
     void Update()
     {
+        if (Game.game.isPaused)
+            return;
+
         if (!player) // TODO : Better
             player = Game.game.player.gameObject;
 

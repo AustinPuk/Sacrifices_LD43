@@ -22,6 +22,9 @@ public class Game : MonoBehaviour
     [SerializeField]
     List<Vector2> waveInfo;
 
+    [SerializeField]
+    EndScreen endScreen;
+
     public bool isPaused;
 
     public int minionsDead = 0;
@@ -37,7 +40,9 @@ public class Game : MonoBehaviour
         if (!game)
             game = this;
 
-        StartGame();
+        isPaused = true;
+
+        //StartGame();
     }
 
     public void StartGame()

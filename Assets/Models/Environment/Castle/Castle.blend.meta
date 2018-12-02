@@ -9,12 +9,26 @@ ModelImporter:
     100006: Cylinder
     100008: Cylinder_001
     100010: Cylinder_002
+    100012: Cube
+    100014: Cube_002
+    100016: Cube_003
+    100018: Cube_004
+    100020: Cylinder_003
+    100022: Cylinder_004
+    100024: Plane
     400000: //RootNode
     400002: Cube_000
     400004: Cube_001
     400006: Cylinder
     400008: Cylinder_001
     400010: Cylinder_002
+    400012: Cube
+    400014: Cube_002
+    400016: Cube_003
+    400018: Cube_004
+    400020: Cylinder_003
+    400022: Cylinder_004
+    400024: Plane
     2100000: CastleWall__castletexture_png
     2100002: Edges__castletexture_png
     2100004: Edges_001__castletexture_png_001
@@ -25,23 +39,47 @@ ModelImporter:
     2100014: CastleWall__castletexture_png_001
     2100016: Edges
     2100018: CastleWall
+    2100020: Walls2__castletexture_png
+    2100022: Walls3
     2300000: Cube_000
     2300002: Cube_001
     2300004: Cylinder
     2300006: Cylinder_001
     2300008: Cylinder_002
+    2300010: Cube
+    2300012: Cube_002
+    2300014: Cube_003
+    2300016: Cube_004
+    2300018: Cylinder_003
+    2300020: Cylinder_004
+    2300022: Plane
     3300000: Cube_000
     3300002: Cube_001
     3300004: Cylinder
     3300006: Cylinder_001
     3300008: Cylinder_002
+    3300010: Cube
+    3300012: Cube_002
+    3300014: Cube_003
+    3300016: Cube_004
+    3300018: Cylinder_003
+    3300020: Cylinder_004
+    3300022: Plane
     4300000: Cylinder_002
     4300002: Cube_000
     4300004: Cylinder_001
     4300006: Cube_001
     4300008: Cylinder
+    4300010: Cube_004
+    4300012: Cube_003
+    4300014: Cylinder_004
+    4300016: Cube
+    4300018: Cube_002
+    4300020: Plane
+    4300022: Cylinder_003
     7400000: Default Take
     9500000: //RootNode
+    2186277476908879412: ImportLogs
   externalObjects:
   - first:
       type: UnityEngine:Material
