@@ -12,10 +12,16 @@ public class Shooter : MonoBehaviour
     [SerializeField]
     MinionPool minionPool; // TODO : ^
 
+    [SerializeField]
+    float cooldown;
+
+    bool onCooldown;
+
     // TODO : Cooldown Logic
 
     void Start ()
     {
+        onCooldown = false;
     }
 
     void Update ()
@@ -28,7 +34,7 @@ public class Shooter : MonoBehaviour
 
     void ProcessMouse()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) &&  !onCooldown)
         {
             RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -42,10 +48,20 @@ public class Shooter : MonoBehaviour
                 bool minionAvailable = minionPool.Shoot(shootDirection); // Tells the closest minion to be shot. False if no minion close enough.
 
                 if (minionAvailable)
+                {
                     player.Shoot(shootDirection); // Causes player to play a shooting animation and face in said direction momentarily. 
+                    StartCoroutine(Cooldown());
+                }
                 
                 //else Play Buzzer / Visual Indicator for failed shoot
             }
         }
+    }
+
+    IEnumerator Cooldown()
+    {
+        onCooldown = true;
+        yield return new WaitForSeconds(cooldown);
+        onCooldown = false;
     }
 }

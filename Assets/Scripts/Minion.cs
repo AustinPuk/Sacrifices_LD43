@@ -84,7 +84,7 @@ public class Minion : MonoBehaviour
 
     void HandleMovement()
     {
-
+        // TODO : Consolidate movemtnt  better and reduce duplicate code
         if (state == MinionState.Follow)
         {
             /*
@@ -97,7 +97,7 @@ public class Minion : MonoBehaviour
 
             // Go to area behind player
             Vector3 destination = king.transform.position + (king.transform.forward * -followDistance);
-            Vector3 movementVector = destination - transform.position;
+            Vector3 movementVector = (destination - transform.position).normalized;
 
             float dist = Vector3.SqrMagnitude(king.transform.position - transform.position);
             if (dist >= stopDistance)
@@ -106,16 +106,16 @@ public class Minion : MonoBehaviour
                 rb.velocity = Vector3.zero;
 
             // Character tries to face in direction of movement vector.
-            //if (movementVector != Vector3.zero)
-                //transform.LookAt(transform.position + Vector3.Slerp(transform.forward, movementVector, 0.8f), transform.up);
+            if (movementVector != Vector3.zero)
+                transform.LookAt(transform.position + Vector3.Slerp(transform.forward, movementVector, 0.8f), transform.up);
         }
         else if (state == MinionState.ShootPrep)
         {
             // Should speed to destination in front of player
-            Vector3 movementVector = shootDest - transform.position;
+            Vector3 movementVector = (shootDest - transform.position).normalized;
 
-            float destThreshold = 0.1f; // temp
-            if (Vector3.SqrMagnitude(movementVector) > destThreshold)
+            float destThreshold = 0.5f; // temp
+            if (Vector3.SqrMagnitude(shootDest - transform.position) > destThreshold * destThreshold)
             {
                 rb.velocity = movementVector * movementSpeed * speedBoost;
 
@@ -125,9 +125,12 @@ public class Minion : MonoBehaviour
             }
             else // Arrived to destination
             {
+                // Snap to proper location
+                transform.position = shootDest;
+
                 // Look in proper direction
                 rb.velocity = Vector3.zero;
-                transform.LookAt(shootDest + (shootDest - king.transform.position) * 5.0f, transform.up); // untested
+                transform.LookAt(transform.position + (transform.position - king.transform.position) * 5.0f, transform.up); // untested
                 ShootPrepAnimation();
             }
         }

@@ -34,3 +34,6 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
+
+# Blender Backup Files
+*.blend[0-9]*

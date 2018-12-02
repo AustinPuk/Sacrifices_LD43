@@ -10,6 +10,8 @@ public class Player : MonoBehaviour
     Vector3 movementVector;
     Rigidbody rb;
 
+    Animator animator;
+
     enum PlayerState
     {
         Inactive,
@@ -45,6 +47,7 @@ public class Player : MonoBehaviour
     {
         //controller = GetComponent<CharacterController>();
         rb = GetComponent<Rigidbody>();
+        animator = GetComponentInChildren<Animator>();
         //Temp
         state = PlayerState.Active;
     }
@@ -70,6 +73,7 @@ public class Player : MonoBehaviour
             // Utilizing Character Controller for Movement
             //controller.Move(movementVector * movementSpeed * Time.deltaTime);
             rb.velocity = movementVector * movementSpeed;
+            animator.SetFloat("Speed", Vector3.Magnitude(rb.velocity));
 
             // Character tries to face in direction of movement vector.
             if (movementVector != Vector3.zero)

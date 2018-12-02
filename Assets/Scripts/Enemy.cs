@@ -100,12 +100,13 @@ public class Enemy : MonoBehaviour
 
             // Go to area behind player
             Vector3 destination = player.transform.position;
-            Vector3 movementVector = destination - transform.position;
+            Vector3 movementVector = (destination - transform.position).normalized;
 
             float dist = Vector3.SqrMagnitude(destination - transform.position);
             if (dist >= (attackDistance * attackDistance))
             {
                 rb.velocity = movementVector * movementSpeed;
+
                 // Tries to face in direction of movement vector.
                 if (movementVector != Vector3.zero)
                     transform.LookAt(transform.position + Vector3.Slerp(transform.forward, movementVector, 0.8f), transform.up);
@@ -113,6 +114,8 @@ public class Enemy : MonoBehaviour
             else
                 attacking = StartCoroutine(Attack());
         }
+        else
+            rb.velocity = Vector3.zero;
     }
 
     void Dead()

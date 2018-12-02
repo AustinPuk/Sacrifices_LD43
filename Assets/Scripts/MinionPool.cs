@@ -11,13 +11,16 @@ public class MinionPool : MonoBehaviour
     [SerializeField]
     float minimumShootDistance = 2.0f;
 
+    [SerializeField]
+    int maxFollowers = 20;
+
     List<Minion> minions;
     List<Minion> following;
 
     void Start ()
     {
         minions = new List<Minion>(GetComponentsInChildren<Minion>());
-        following = new List<Minion>(GetComponentsInChildren<Minion>());
+        following = new List<Minion>();
     }
     
     // Update is called once per frame
@@ -25,15 +28,11 @@ public class MinionPool : MonoBehaviour
     {
     }
 
-    void OnDrawGizmos()
-    {
-        // DEBUG
-        Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(player.transform.position, minimumShootDistance);
-    }
-
     public void Gather()
     {
+        if (following.Count >= maxFollowers)
+            return;
+
         foreach  (Minion minion in minions)
         {
             if (minion.IsInactive)
@@ -62,9 +61,11 @@ public class MinionPool : MonoBehaviour
 
         if (closestMinion == null)
             return false;  // Shooting failed.
-
-        following.Remove(closestMinion);
-        closestMinion.Shoot(shootDirection);
-        return true;
+        else
+        {
+            following.Remove(closestMinion);
+            closestMinion.Shoot(shootDirection);
+            return true;
+        }
     }
 }
