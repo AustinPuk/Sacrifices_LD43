@@ -25,7 +25,7 @@ public class Explosion : MonoBehaviour
             }
             else if (hit.gameObject.GetComponent<Player>() != null)
             {
-                hit.gameObject.GetComponent<Player>().Damage();
+                hit.gameObject.GetComponent<Player>().Damage(transform.position);
             }
         }
 

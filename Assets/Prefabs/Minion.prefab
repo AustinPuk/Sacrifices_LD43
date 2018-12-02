@@ -618,6 +618,7 @@ MonoBehaviour:
   particleSelfDestruct: {fileID: 198496745878450222}
   selfDestructTime: 5
   selfDestructRefresh: 5
+  bodyRender: {fileID: 137360094144540808}
   selfDestructTimer: 5
 --- !u!114 &114285096327527588
 MonoBehaviour:

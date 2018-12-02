@@ -137,7 +137,7 @@ public class Enemy : MonoBehaviour
 
         yield return new WaitForSeconds(0.1f); // TODO : Attack Delay
 
-        Game.game.player.Damage();
+        Game.game.player.Damage(transform.position);
 
         yield return new WaitForSeconds(attackCooldown);
 

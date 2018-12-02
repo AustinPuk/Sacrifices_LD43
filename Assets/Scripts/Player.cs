@@ -13,7 +13,17 @@ public class Player : MonoBehaviour
     [SerializeField]
     float maxHealth = 10.0f;
 
+    [SerializeField]
+    float knockbackForce;
+
+    [SerializeField]
+    float knockbackTime;
+
+    [SerializeField]
+    float invincibleTime;
+
     float currentHealth;
+    bool invincible;
 
     Vector3 movementVector;
     Rigidbody rb;
@@ -23,7 +33,8 @@ public class Player : MonoBehaviour
     {
         Inactive,
         Active,
-        Shooting
+        Shooting,
+        Stunned
     }
 
     PlayerState state;
@@ -44,14 +55,26 @@ public class Player : MonoBehaviour
         StartCoroutine(ShootAnimation());
     }
 
-    public void Damage()
+    public void Damage(Vector3 origin)
     {
+        if (invincible)
+            return;
+
+        Debug.Log("Player Damaged");
+
         currentHealth -= 1.0f; // TODO
 
         if (currentHealth <= 0.0f)
         {
             currentHealth = 0.0f;
             Die();
+        }
+        else
+        {
+            Vector3 dir = transform.position - origin;;
+            StartCoroutine(Knockback(dir.normalized));
+            invincible = true;
+            StartCoroutine(Invincibility());
         }
     }
 
@@ -82,6 +105,46 @@ public class Player : MonoBehaviour
         HandleMovement();
     }
 
+    IEnumerator Knockback(Vector3 direction)
+    {
+        state = PlayerState.Stunned;
+        rb.velocity = direction * knockbackForce;
+        yield return new WaitForSeconds(0.1f);
+        rb.velocity = Vector3.zero;
+        yield return new WaitForSeconds(knockbackTime);
+        state = PlayerState.Active;
+    }
+
+    IEnumerator Invincibility()
+    {
+        Coroutine flash = StartCoroutine(FlashRed());
+        yield return new WaitForSeconds(invincibleTime);
+        StopCoroutine(flash);
+        invincible = false;
+
+        Color orig = new Color(0.8f, 0.8f, 0.8f, 1.0f);
+        foreach (Renderer rend in GetComponentsInChildren<Renderer>())
+            rend.material.color = orig;
+    }
+
+    IEnumerator FlashRed()
+    {
+        Color orig = new Color(0.8f, 0.8f, 0.8f, 1.0f);
+        Color red = new Color(1.0f, 0.5f, 0.5f, 1.0f);
+        while (true)
+        {
+            foreach (Renderer rend in GetComponentsInChildren<Renderer>())
+                rend.material.color = red;
+
+            yield return new WaitForSeconds(0.1f);
+
+            foreach (Renderer rend in GetComponentsInChildren<Renderer>())
+                rend.material.color = orig;
+
+            yield return new WaitForSeconds(0.1f);
+        }
+    }
+
     void ProcessInput()
     {
         // Gets Movement Input
@@ -102,6 +165,10 @@ public class Player : MonoBehaviour
             // Character tries to face in direction of movement vector.
             if (movementVector != Vector3.zero)
                 transform.LookAt(transform.position + Vector3.Slerp(transform.forward, movementVector, 0.8f), transform.up);
+        }
+        else
+        {
+            animator.SetFloat("Speed", 0.0f);
         }
     }
 

@@ -41,6 +41,9 @@ public class Minion : MonoBehaviour
     [SerializeField]
     float selfDestructRefresh; // Time it takes to refresh the selfDestructTimer
 
+    [SerializeField]
+    Renderer bodyRender;
+
     public float selfDestructTimer;
 
     public bool IsInactive { get { return state == MinionState.Inactive; } }
@@ -124,6 +127,11 @@ public class Minion : MonoBehaviour
             if (particleSelfDestruct.isPlaying)
                 particleSelfDestruct.Stop();
         }
+
+        // Tint minion more red if close to destruct
+        Color orig = new Color(0.8f, 0.8f, 0.8f, 1.0f);
+        Color col = Color.Lerp(orig , Color.red, 1.0f - (selfDestructTimer / selfDestructTime));
+        bodyRender.material.color = col;
     }
 
     void HandleMovement()
@@ -194,14 +202,11 @@ public class Minion : MonoBehaviour
     {
         if (state == MinionState.Follow && collision.gameObject.tag == "Enemy")
         {
-            Debug.Log(" Self Destruct : " + selfDestructTimer);
-
             // Self Destructs on touching enemy
             selfDestructTimer -= Time.deltaTime * 2.0f; // Times two to counteract refresh.... TODO
 
             if (selfDestructTimer <= 0)
             {
-                Debug.Log("Delayed Boom");
                 StartCoroutine(DelayedBoom());
             }
         }
