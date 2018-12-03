@@ -29,6 +29,8 @@ public class Player : MonoBehaviour
     Rigidbody rb;
     Animator animator;
 
+    Vector3 originalPosition;
+
     enum PlayerState
     {
         Inactive,
@@ -47,6 +49,9 @@ public class Player : MonoBehaviour
 
     public void Shoot(Vector3 shootDirection)
     {
+        if (Game.game.isPaused)
+            return;
+
         state = PlayerState.Shooting;
 
         rb.velocity = Vector3.zero;
@@ -57,10 +62,12 @@ public class Player : MonoBehaviour
 
     public void Damage(Vector3 origin)
     {
-        if (invincible)
+
+        if (Game.game.isPaused)
             return;
 
-        Debug.Log("Player Damaged");
+        if (invincible)
+            return;
 
         currentHealth -= 1.0f; // TODO
 
@@ -82,6 +89,7 @@ public class Player : MonoBehaviour
     {
         state = PlayerState.Active;
         currentHealth = maxHealth;
+        transform.position = originalPosition;
     }
 
     /*
@@ -97,12 +105,17 @@ public class Player : MonoBehaviour
 
         //Temp. Should be activated by Game Manager
         state = PlayerState.Active;
+
+        originalPosition = transform.position;
     }
 
     void Update ()
     {
         if (Game.game.isPaused)
+        {
+            rb.velocity = Vector3.zero;
             return;
+        }
 
         ProcessInput();
         HandleMovement();
@@ -178,7 +191,6 @@ public class Player : MonoBehaviour
     void Die()
     {
         // TODO : Death Animation
-
         Game.game.PlayerDies();
     }
 

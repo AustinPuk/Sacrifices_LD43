@@ -69,12 +69,18 @@ public class Minion : MonoBehaviour
 
     public void Follow()
     {
+        if (Game.game.isPaused)
+            return;
+
         GetComponent<Collider>().isTrigger = false;
         state = MinionState.Follow;
     }
 
     public void Shoot(Vector3 shootOrigin, Vector3 shootDirection)
     {
+        if (Game.game.isPaused)
+            return;
+
         // TEMP Set as trigger to avoid collisions. In the future, want to have the minion properly walk around the player.
         GetComponent<Collider>().isTrigger = true;
 
@@ -85,6 +91,9 @@ public class Minion : MonoBehaviour
 
     public void Damage()
     {
+        if (Game.game.isPaused)
+            return;
+
         // TODO : Death Animation or Effect
         if (state == MinionState.Follow)
             StartCoroutine(DelayedBoom());
@@ -104,7 +113,10 @@ public class Minion : MonoBehaviour
     void Update()
     {
         if (Game.game.isPaused)
+        {
+            rb.velocity = Vector3.zero;
             return;
+        }
 
         if (!king)
             king = Game.game.player;
@@ -231,6 +243,7 @@ public class Minion : MonoBehaviour
 
         GetComponent<Collider>().enabled = false;
 
+        Game.game.MinionDies();
         state = MinionState.Dead; // TEMP
         rb.velocity = Vector3.zero;
         explosion.Boom();
@@ -289,7 +302,7 @@ public class Minion : MonoBehaviour
     IEnumerator Die()
     {
         // TODO
-        Game.game.MinionDies();
+        //Game.game.MinionDies(); // Moved before boom
         particleShootReady.Stop();
         particleShootTrail.Stop();
         animator.SetTrigger("Dead");

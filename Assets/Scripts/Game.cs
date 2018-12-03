@@ -31,11 +31,11 @@ public class Game : MonoBehaviour
 
     public int waveCurrent = 1;
 
-    static int finalWave = 5;
+    public int MaxWaves { get { return waveInfo.Count; } }
 
     int enemiesLeft;
 
-    void Start ()
+    void Awake ()
     {
         if (!game)
             game = this;
@@ -66,21 +66,22 @@ public class Game : MonoBehaviour
     public void WaveEnd()
     {
         waveCurrent++;
-        if (waveCurrent <= finalWave)
+        if (waveCurrent <= waveInfo.Count)
             StartWave();
         else
-            EndGame();
-    }
-
-    public void EndGame()
-    {
-        // TODO
-        StartGame();
+        {
+            waveCurrent--;
+            isPaused = true;
+            enemyPool.StopSpawn();
+            endScreen.SetWinScreen();
+        }
     }
 
     public void PlayerDies()
     {
-        EndGame();
+        isPaused = true;
+        enemyPool.StopSpawn();
+        endScreen.SetLoseScreen();
     }
 
     public void MinionDies()

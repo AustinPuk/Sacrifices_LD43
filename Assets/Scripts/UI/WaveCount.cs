@@ -8,10 +8,14 @@ public class WaveCount : MonoBehaviour
     [SerializeField]
     Text counter;
 
+    [SerializeField]
+    Text maxWave;
+
     // Use this for initialization
     void Start()
     {
         counter.text = "1";
+        maxWave.text = Game.game.MaxWaves.ToString();
     }
 
     // Update is called once per frame

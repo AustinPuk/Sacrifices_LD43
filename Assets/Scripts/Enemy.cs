@@ -45,6 +45,9 @@ public class Enemy : MonoBehaviour
 
     public void Damage()
     {
+        if (Game.game.isPaused)
+            return;
+
         StartCoroutine(TakeDamage());
     }
 
@@ -65,7 +68,10 @@ public class Enemy : MonoBehaviour
     void Update()
     {
         if (Game.game.isPaused)
+        {
+            rb.velocity = Vector3.zero;
             return;
+        }
 
         if (!player) // TODO : Better
             player = Game.game.player.gameObject;

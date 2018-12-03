@@ -16,6 +16,7 @@ public class EndScreen : MonoBehaviour
 
     public void SetLoseScreen()
     {
+        this.gameObject.SetActive(true);
         winText.gameObject.SetActive(false);
         loseText.gameObject.SetActive(true);
         minionsDied.text = Game.game.minionsDead.ToString();
@@ -23,6 +24,7 @@ public class EndScreen : MonoBehaviour
 
     public void SetWinScreen()
     {
+        this.gameObject.SetActive(true);
         winText.gameObject.SetActive(true);
         loseText.gameObject.SetActive(false);
         minionsDied.text = Game.game.minionsDead.ToString();
