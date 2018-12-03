@@ -24,6 +24,19 @@ public class EnemyPool : MonoBehaviour
         }
     }
 
+    public bool ConfirmEnemiesAllDefeated()
+    {
+        foreach (Transform child in transform)
+        {
+            if (child.gameObject.GetComponent<Enemy>() != null)
+            {
+                Debug.Log("ENEMY STILL REMAINING");
+                return false;
+            }
+        }
+        return true;
+    }
+
     public void SpawnWave(int numEnemies, float spawnTimer)
     {
         spawnLocations = new List<Vector3>();

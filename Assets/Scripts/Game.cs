@@ -94,6 +94,22 @@ public class Game : MonoBehaviour
         enemiesLeft--;
 
         if (enemiesLeft <= 0)
+        {
+            StartCoroutine(DelayedEndWave());
+        }
+    }
+
+    IEnumerator DelayedEndWave()
+    {
+        yield return new WaitForSeconds(0.01f);
+        if (enemyPool.ConfirmEnemiesAllDefeated())
+        {
+            yield return new WaitForSeconds(5.0f);
             WaveEnd();
+        }
+        else
+        {
+            Debug.LogWarning("This shouldn't be happening");
+        }
     }
 }
