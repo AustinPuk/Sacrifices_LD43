@@ -92,6 +92,11 @@ public class Player : MonoBehaviour
         transform.position = originalPosition;
     }
 
+    public void Heal()
+    {
+        currentHealth = maxHealth;
+    }
+
     /*
      *  Main Functions
      */
@@ -140,7 +145,11 @@ public class Player : MonoBehaviour
 
         Color orig = new Color(0.8f, 0.8f, 0.8f, 1.0f);
         foreach (Renderer rend in GetComponentsInChildren<Renderer>())
+        {
+            if (rend.gameObject.name == "Eyes")
+                continue;
             rend.material.color = orig;
+        }
     }
 
     IEnumerator FlashRed()
@@ -150,12 +159,20 @@ public class Player : MonoBehaviour
         while (true)
         {
             foreach (Renderer rend in GetComponentsInChildren<Renderer>())
+            {
+                if (rend.gameObject.name == "Eyes")
+                    continue;
                 rend.material.color = red;
+            }
 
             yield return new WaitForSeconds(0.1f);
 
             foreach (Renderer rend in GetComponentsInChildren<Renderer>())
+            {
+                if (rend.gameObject.name == "Eyes")
+                    continue;
                 rend.material.color = orig;
+            }
 
             yield return new WaitForSeconds(0.1f);
         }
